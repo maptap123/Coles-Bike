@@ -118,6 +118,19 @@ h2 {
   justify-items: end;
 }
 
+.map-progress-card {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 510;
+  width: min(430px, calc(100% - 48px));
+  box-shadow: var(--shadow);
+}
+
+.map-progress-card .eyebrow {
+  color: var(--red);
+}
+
 .status-pill.secondary {
   background: rgba(255, 250, 241, 0.92);
   color: var(--ink);
@@ -140,7 +153,7 @@ h2 {
 .panel {
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.86);
   padding: 18px;
 }
 
@@ -294,7 +307,7 @@ h2 {
 
 .social-button-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -318,14 +331,39 @@ h2 {
   color: #fffaf1;
 }
 
+.donate-panel {
+  display: grid;
+  gap: 14px;
+  border-color: rgba(203, 75, 53, 0.38);
+  background:
+    linear-gradient(135deg, rgba(203, 75, 53, 0.14), rgba(208, 161, 58, 0.22)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 34px rgba(203, 75, 53, 0.16);
+}
+
+.donate-panel .eyebrow {
+  color: var(--red);
+}
+
 .donation-button {
-  background: var(--green);
+  display: inline-grid;
+  min-height: 54px;
+  place-items: center;
+  border: 1px solid rgba(16, 32, 34, 0.12);
+  border-radius: 8px;
+  background: var(--red);
   color: #fffaf1;
+  font-size: 1.05rem;
+  font-weight: 950;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(203, 75, 53, 0.28);
+  cursor: pointer;
 }
 
 .donation-button:focus,
 .donation-button:hover {
-  background: #155b44;
+  background: #a93423;
+  transform: translateY(-1px);
 }
 
 .leaflet-control-attribution {
@@ -371,6 +409,12 @@ h2 {
     inset: 16px;
   }
 
+  .map-progress-card {
+    right: 16px;
+    bottom: 16px;
+    width: min(390px, calc(100% - 32px));
+  }
+
   .map-badges {
     justify-items: start;
   }
@@ -390,6 +434,14 @@ h2 {
     flex-direction: column;
   }
 
+  .map-progress-card {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin: 12px 14px 14px;
+  }
+
   .status-pill {
     align-self: flex-start;
   }
@@ -400,6 +452,10 @@ h2 {
 
   .distance-grid {
     grid-template-columns: 1fr;
+  }
+
+  .map-progress-card .distance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .social-button-grid {

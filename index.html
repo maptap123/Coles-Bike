@@ -23,10 +23,7 @@
             <div class="status-pill secondary" id="ride-clock">0 days</div>
           </div>
         </div>
-      </section>
-
-      <aside class="sidebar" aria-label="Ride progress">
-        <section class="summary">
+        <section class="summary map-progress-card" aria-label="Current ride progress">
           <div>
             <p class="eyebrow">Current location</p>
             <h2 id="current-place">Loading route</h2>
@@ -50,13 +47,30 @@
             <div id="progress-fill"></div>
           </div>
         </section>
+      </section>
 
+      <aside class="sidebar" aria-label="Ride progress">
         <section class="panel goals">
           <div class="section-header">
             <h2>Side Quests</h2>
             <span id="goals-count" class="mini-stat">0/0</span>
           </div>
           <ul id="goals-list"></ul>
+        </section>
+
+        <section class="panel donate-panel">
+          <div>
+            <p class="eyebrow">Support the ride</p>
+            <h2>Fuel Cole's next miles</h2>
+          </div>
+          <a
+            id="venmo-link"
+            class="donation-button"
+            href="https://venmo.com/u/colecampguy"
+            rel="noreferrer"
+          >
+            Donate
+          </a>
         </section>
 
         <section class="panel social-links">
@@ -79,14 +93,6 @@
               rel="noreferrer"
             >
               Facebook
-            </a>
-            <a
-              id="venmo-link"
-              class="social-button donation-button"
-              href="https://venmo.com/u/colecampguy"
-              rel="noreferrer"
-            >
-              Donate
             </a>
           </div>
         </section>
