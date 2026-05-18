@@ -164,10 +164,25 @@ function renderFacebookLocation(data) {
   };
 }
 
-function renderInstagram(instagram = {}) {
+async function loadInstagramPosts(instagram) {
+  try {
+    const response = await fetch("/api/instagram", { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Instagram feed is not connected.");
+    }
+
+    const feed = await response.json();
+    return Array.isArray(feed.posts) ? feed.posts : [];
+  } catch {
+    return instagram.posts || [];
+  }
+}
+
+async function renderInstagram(instagram = {}) {
   const link = document.querySelector("#instagram-link");
   const grid = document.querySelector("#instagram-grid");
-  const posts = instagram.posts || [];
+  const posts = await loadInstagramPosts(instagram);
   const instagramUrl = instagram.url || "https://www.instagram.com/";
 
   link.href = instagramUrl;
@@ -177,7 +192,18 @@ function renderInstagram(instagram = {}) {
   };
   grid.innerHTML = "";
 
-  posts.slice(0, 4).forEach((post) => {
+  const visiblePosts =
+    posts.length > 0
+      ? posts.slice(0, 4)
+      : [
+          {
+            title: "Open Instagram",
+            caption: "See the latest ride posts",
+            url: instagramUrl,
+          },
+        ];
+
+  visiblePosts.forEach((post) => {
     const card = document.createElement("a");
     const caption = document.createElement("span");
 
@@ -308,7 +334,7 @@ async function refreshProgress() {
   const progress = renderStats(data);
   renderFacebookLocation(data);
   renderGoals(data.goals || []);
-  renderInstagram(data.instagram || {});
+  await renderInstagram(data.instagram || {});
   renderMap(data, progress);
 }
 
