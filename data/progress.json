@@ -48,28 +48,7 @@
   ],
   "instagram": {
     "url": "https://www.instagram.com/colethe_dude",
-    "posts": [
-      {
-        "title": "Road update",
-        "caption": "Latest photos from the ride",
-        "url": "https://www.instagram.com/colethe_dude"
-      },
-      {
-        "title": "Camp note",
-        "caption": "Nights, repairs, and small wins",
-        "url": "https://www.instagram.com/colethe_dude"
-      },
-      {
-        "title": "Mileage day",
-        "caption": "Big miles across the middle",
-        "url": "https://www.instagram.com/colethe_dude"
-      },
-      {
-        "title": "Food stop",
-        "caption": "Best roadside fuel so far",
-        "url": "https://www.instagram.com/colethe_dude"
-      }
-    ]
+    "posts": []
   },
   "facebookLocation": {
     "place": "Cole Jenkins on Facebook",
