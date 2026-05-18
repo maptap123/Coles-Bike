@@ -44,17 +44,6 @@ function toLatLng(point) {
   return [point.lat, point.lng];
 }
 
-function hasSourceLocation(point) {
-  return (
-    Number.isFinite(Number(point?.sourceLat)) &&
-    Number.isFinite(Number(point?.sourceLng))
-  );
-}
-
-function sourceLatLng(point) {
-  return [Number(point.sourceLat), Number(point.sourceLng)];
-}
-
 function lastRoutePoint(route) {
   return Array.isArray(route) && route.length > 0 ? route[route.length - 1] : null;
 }
@@ -324,14 +313,6 @@ function renderStats(data) {
   setText("#ride-clock", formatDuration(data.startedAt));
   setText("#current-place", data.current.place);
   setText("#last-updated", `Last updated ${data.current.updatedAt}`);
-  setText(
-    "#phone-location",
-    hasSourceLocation(data.current)
-      ? `Phone GPS ${formatCoordinate(data.current.sourceLat)}, ${formatCoordinate(
-          data.current.sourceLng,
-        )}`
-      : "",
-  );
   setText("#miles-ridden", formatMiles(data.current.miles));
   setText("#miles-left", formatMiles(Math.max(data.totalMiles - data.current.miles, 0)));
   setText("#progress-percent", `${percent}%`);
