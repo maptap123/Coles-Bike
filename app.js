@@ -149,11 +149,14 @@ function renderSocialLinks(data) {
   const instagramUrl = data.instagram?.url || "https://www.instagram.com/colethe_dude";
   const facebookUrl =
     data.facebookLocation?.url || "https://www.facebook.com/cole.jenkins.924808";
+  const venmoUrl = data.venmo?.url || "https://venmo.com/u/colecampguy";
   const instagramLink = document.querySelector("#instagram-link");
   const facebookLink = document.querySelector("#facebook-link");
+  const venmoLink = document.querySelector("#venmo-link");
 
   instagramLink.href = instagramUrl;
   facebookLink.href = facebookUrl;
+  venmoLink.href = venmoUrl;
 
   instagramLink.onclick = (event) => {
     event.preventDefault();
@@ -162,6 +165,10 @@ function renderSocialLinks(data) {
   facebookLink.onclick = (event) => {
     event.preventDefault();
     window.location.assign(facebookUrl);
+  };
+  venmoLink.onclick = (event) => {
+    event.preventDefault();
+    window.location.assign(venmoUrl);
   };
 }
 
