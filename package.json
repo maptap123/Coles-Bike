@@ -5,15 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "check": "node --check app.js && node --check lib/progressStore.js && node --check lib/smartthings.js && node --check api/progress.js && node --check api/location.js && node --check api/refresh-location.js && node --check api/smartthings-devices.js && node --check scraper/smartthings-scraper.mjs",
-    "scraper": "node scraper/smartthings-scraper.mjs",
-    "scraper:login": "set SCRAPER_LOGIN_ONLY=true&& node scraper/smartthings-scraper.mjs"
+    "check": "node --check app.js && node --check lib/progressStore.js && node --check api/progress.js && node --check api/location.js && node --check api/refresh-location.js && node --check api/instagram.js"
   },
   "dependencies": {
     "@vercel/blob": "^2.3.3"
   },
   "devDependencies": {
-    "playwright": "^1.57.0",
     "vercel": "^48.0.0"
   }
 }
