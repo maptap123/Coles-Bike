@@ -1,14 +1,3 @@
-const completedTrailBaseStyle = {
-  color: "#1a0a20",
-  weight: 11,
-  opacity: 0.3,
-};
-const completedTrailStyle = {
-  weight: 6,
-  opacity: 0.88,
-  lineCap: "round",
-  lineJoin: "round",
-};
 const TRAIL_SEGMENT_SIZE = 3;
 
 function lerpChannel(a, b, t) {
@@ -16,12 +5,12 @@ function lerpChannel(a, b, t) {
 }
 
 function trailColorAt(t) {
-  // red → rose-white → navy, skipping pure white so it stays visible on the map
-  const red = [191, 10, 48];
-  const mid = [210, 180, 190];
+  // Vibrant flag gradient: patriot red → white → deep navy
+  const red = [204, 0, 41];
+  const white = [255, 255, 255];
   const navy = [0, 40, 104];
-  const [r1, g1, b1] = t < 0.5 ? red : mid;
-  const [r2, g2, b2] = t < 0.5 ? mid : navy;
+  const [r1, g1, b1] = t < 0.5 ? red : white;
+  const [r2, g2, b2] = t < 0.5 ? white : navy;
   const u = t < 0.5 ? t * 2 : (t - 0.5) * 2;
   return `rgb(${lerpChannel(r1, r2, u)},${lerpChannel(g1, g2, u)},${lerpChannel(b1, b2, u)})`;
 }
@@ -214,13 +203,27 @@ function drawCompletedTrail(map, route) {
     return;
   }
 
-  mapState.layers.push(L.polyline(route, completedTrailBaseStyle).addTo(map));
-
   routeColorSegments(route).forEach((segment) => {
+    const c = segment.color;
+    // Outer halo — wide soft glow
     mapState.layers.push(
       L.polyline(segment.points, {
-        ...completedTrailStyle,
-        color: segment.color,
+        color: c, weight: 18, opacity: 0.12,
+        lineCap: "round", lineJoin: "round",
+      }).addTo(map),
+    );
+    // Mid glow
+    mapState.layers.push(
+      L.polyline(segment.points, {
+        color: c, weight: 10, opacity: 0.35,
+        lineCap: "round", lineJoin: "round",
+      }).addTo(map),
+    );
+    // Bright core
+    mapState.layers.push(
+      L.polyline(segment.points, {
+        color: c, weight: 5, opacity: 0.95,
+        lineCap: "round", lineJoin: "round",
       }).addTo(map),
     );
   });
