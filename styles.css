@@ -237,30 +237,20 @@ h2 {
   cursor: pointer;
 }
 
-#journal-list,
+.location-name {
+  margin: 0;
+  color: var(--blue);
+  font-size: 1.08rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
 #goals-list {
   display: grid;
   gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-#journal-list li {
-  display: grid;
-  gap: 4px;
-  border-left: 3px solid var(--red);
-  padding: 4px 0 6px 12px;
-}
-
-#journal-list strong {
-  font-size: 0.96rem;
-}
-
-#journal-list span {
-  color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.35;
 }
 
 #goals-list {
