@@ -26,23 +26,79 @@
   ],
   "goals": [
     {
-      "label": "Dip the back wheel in the Pacific",
-      "detail": "San Francisco, California",
-      "done": true
-    },
-    {
-      "label": "Cross the Rockies",
-      "detail": "Climb, descend, repeat",
-      "done": true
-    },
-    {
-      "label": "Ride through the Great Plains",
-      "detail": "Long miles and open sky",
+      "label": "Evolve Pokemon",
       "done": false
     },
     {
-      "label": "Reach the Atlantic",
-      "detail": "Atlantic City, New Jersey",
+      "label": "Finish Pokedex",
+      "done": false
+    },
+    {
+      "label": "Have a rival",
+      "done": false
+    },
+    {
+      "label": "Have a meal bought",
+      "done": false
+    },
+    {
+      "label": "Find Winnie the Pooh",
+      "done": false
+    },
+    {
+      "label": "Find 13 other countries",
+      "done": false
+    },
+    {
+      "label": "Go swimming",
+      "done": false
+    },
+    {
+      "label": "Find a dollar for 1 mile",
+      "done": false
+    },
+    {
+      "label": "Watch a baseball game",
+      "done": false
+    },
+    {
+      "label": "Play a local game",
+      "done": false
+    },
+    {
+      "label": "Play a card game",
+      "done": false
+    },
+    {
+      "label": "See a shooting star",
+      "done": false
+    },
+    {
+      "label": "Eat a new food",
+      "done": false
+    },
+    {
+      "label": "Sleep under a bridge",
+      "done": false
+    },
+    {
+      "label": "Find a wife",
+      "done": false
+    },
+    {
+      "label": "DIE",
+      "done": false
+    },
+    {
+      "label": "Go to a fair",
+      "done": false
+    },
+    {
+      "label": "Join a bonfire",
+      "done": false
+    },
+    {
+      "label": "Read a book to someone",
       "done": false
     }
   ],
