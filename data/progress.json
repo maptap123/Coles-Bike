@@ -105,6 +105,10 @@
     "place": "Cole Jenkins on Facebook",
     "url": "https://www.facebook.com/cole.jenkins.924808"
   },
+  "venmo": {
+    "handle": "@colecampguy",
+    "url": "https://venmo.com/u/colecampguy"
+  },
   "routeId": "54272880",
   "routeSource": "https://ridewithgps.com/routes/54272880"
 }
