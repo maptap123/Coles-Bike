@@ -1,11 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "crons": [
-    {
-      "path": "/api/refresh-location",
-      "schedule": "*/10 * * * *"
-    }
-  ],
   "functions": {
     "api/*.js": {
       "maxDuration": 15
