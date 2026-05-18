@@ -10,7 +10,7 @@ const completedStyle = {
   opacity: 0.95,
 };
 
-const REFRESH_INTERVAL_MS = 10 * 60 * 1000;
+const REFRESH_INTERVAL_MS = 60 * 1000;
 
 const mapState = {
   map: null,
@@ -24,6 +24,21 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 function toLatLng(point) {
   return [point.lat, point.lng];
+}
+
+function hasSourceLocation(point) {
+  return (
+    Number.isFinite(Number(point?.sourceLat)) &&
+    Number.isFinite(Number(point?.sourceLng))
+  );
+}
+
+function sourceLatLng(point) {
+  return [Number(point.sourceLat), Number(point.sourceLng)];
+}
+
+function formatCoordinate(value) {
+  return Number(value).toFixed(4);
 }
 
 function projectPointOnSegment(point, segmentStart, segmentEnd) {
@@ -185,6 +200,11 @@ function renderStats(data) {
   document.querySelector("#current-place").textContent = data.current.place;
   document.querySelector("#last-updated").textContent =
     `Last updated ${data.current.updatedAt}`;
+  document.querySelector("#phone-location").textContent = hasSourceLocation(data.current)
+    ? `Phone GPS ${formatCoordinate(data.current.sourceLat)}, ${formatCoordinate(
+        data.current.sourceLng,
+      )}`
+    : "";
   document.querySelector("#miles-ridden").textContent = formatMiles(
     data.current.miles,
   );
@@ -261,10 +281,32 @@ function renderMap(data, progress) {
   const marker = L.marker(toLatLng(routePoint), { icon: markerIcon }).addTo(
     mapState.map,
   );
-  marker.bindPopup(`<strong>${data.current.place}</strong><br>${data.current.updatedAt}`);
+  marker.bindPopup(
+    `<strong>${data.current.place}</strong><br>${data.current.updatedAt}<br>Route progress`,
+  );
   mapState.layers.push(marker);
 
-  const bounds = L.latLngBounds([...route, ...completedRoute]);
+  const boundsPoints = [...route, ...completedRoute];
+
+  if (hasSourceLocation(data.current)) {
+    const phoneIcon = L.divIcon({
+      className: "phone-marker",
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
+    });
+    const phoneMarker = L.marker(sourceLatLng(data.current), { icon: phoneIcon }).addTo(
+      mapState.map,
+    );
+    phoneMarker.bindPopup(
+      `<strong>Phone GPS</strong><br>${data.current.updatedAt}<br>${formatCoordinate(
+        data.current.sourceLat,
+      )}, ${formatCoordinate(data.current.sourceLng)}`,
+    );
+    mapState.layers.push(phoneMarker);
+    boundsPoints.push(sourceLatLng(data.current));
+  }
+
+  const bounds = L.latLngBounds(boundsPoints);
   mapState.map.fitBounds(bounds, { padding: [36, 36] });
 }
 
