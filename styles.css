@@ -659,6 +659,7 @@ h2 {
   }
 
   .map-overlay {
+    bottom: auto;
     align-items: stretch;
     flex-direction: column;
   }
