@@ -193,6 +193,7 @@ h2 {
   align-content: start;
   gap: 18px;
   height: 100%;
+  min-height: 0;
   padding: 22px;
   border-left: 3px solid var(--gold);
   background: var(--navy);
