@@ -49,8 +49,7 @@ Send JSON like:
   "place": "Kansas City, Missouri",
   "lat": 39.0997,
   "lng": -94.5786,
-  "updatedAt": "May 16, 2026 at 8:30 AM",
-  "note": "Rolling east after breakfast."
+  "updatedAt": "May 16, 2026 at 8:30 AM"
 }
 ```
 
@@ -70,7 +69,8 @@ Edit `data/progress.json`:
 - `totalMiles`: expected full trip distance
 - `routeSource`: the planned Ride with GPS route URL
 - `actualPath`: the real path published so far
-- `checkins`: recent public notes
+- `facebookLocation`: optional override for the Facebook profile or place link
+- `instagram`: Instagram profile and tile links
 
 ## Local Preview
 
