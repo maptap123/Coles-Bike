@@ -118,6 +118,55 @@ function closestPointOnRoute(point, route) {
   return bestMatch || point;
 }
 
+function routePointForMiles(data) {
+  const route = Array.isArray(data.route) ? data.route : [];
+  const currentMiles = Number(data.current?.miles);
+
+  if (route.length <= 1 || !Number.isFinite(currentMiles)) {
+    return closestPointOnRoute(data.current, route);
+  }
+
+  const routeHasMiles = route.every((point) => Number.isFinite(Number(point.miles)));
+
+  if (!routeHasMiles) {
+    return closestPointOnRoute(data.current, route);
+  }
+
+  const routeEndMiles = Number(route[route.length - 1].miles);
+  const totalMiles = Number(data.totalMiles);
+  const targetMiles =
+    Number.isFinite(totalMiles) && totalMiles > 0 && routeEndMiles > 0
+      ? (clamp(currentMiles / totalMiles, 0, 1) * routeEndMiles)
+      : currentMiles;
+
+  if (targetMiles <= Number(route[0].miles)) {
+    return route[0];
+  }
+
+  for (let index = 0; index < route.length - 1; index += 1) {
+    const start = route[index];
+    const end = route[index + 1];
+    const startMiles = Number(start.miles);
+    const endMiles = Number(end.miles);
+
+    if (targetMiles <= endMiles) {
+      const segmentProgress =
+        endMiles === startMiles
+          ? 0
+          : clamp((targetMiles - startMiles) / (endMiles - startMiles), 0, 1);
+
+      return {
+        lat: Number(start.lat) + (Number(end.lat) - Number(start.lat)) * segmentProgress,
+        lng: Number(start.lng) + (Number(end.lng) - Number(start.lng)) * segmentProgress,
+        miles: targetMiles,
+        segmentIndex: index,
+      };
+    }
+  }
+
+  return route[route.length - 1];
+}
+
 function completedRouteFor(data) {
   const route = Array.isArray(data.route) ? data.route : [];
 
@@ -125,7 +174,7 @@ function completedRouteFor(data) {
     return route.map(toLatLng);
   }
 
-  const bestMatch = closestPointOnRoute(data.current, route);
+  const bestMatch = routePointForMiles(data);
 
   const completedRoute = route.slice(0, bestMatch.segmentIndex + 1).map(toLatLng);
   completedRoute.push([bestMatch.lat, bestMatch.lng]);
@@ -341,7 +390,7 @@ function renderMap(data, progress) {
   clearRideLayers();
 
   const completedRoute = completedRouteFor(data, progress);
-  const routePoint = closestPointOnRoute(data.current, data.route);
+  const routePoint = routePointForMiles(data);
   const destination = lastRoutePoint(data.route);
 
   drawCompletedTrail(mapState.map, completedRoute);
@@ -372,27 +421,7 @@ function renderMap(data, progress) {
     mapState.layers.push(destinationMarker);
   }
 
-  const boundsPoints = destination
-    ? [...completedRoute, toLatLng(routePoint), toLatLng(destination)]
-    : [...completedRoute, toLatLng(routePoint)];
-
-  if (hasSourceLocation(data.current)) {
-    const phoneIcon = L.divIcon({
-      className: "phone-marker",
-      iconSize: [22, 22],
-      iconAnchor: [11, 11],
-    });
-    const phoneMarker = L.marker(sourceLatLng(data.current), { icon: phoneIcon }).addTo(
-      mapState.map,
-    );
-    phoneMarker.bindPopup(
-      `<strong>Phone GPS</strong><br>${data.current.updatedAt}<br>${formatCoordinate(
-        data.current.sourceLat,
-      )}, ${formatCoordinate(data.current.sourceLng)}`,
-    );
-    mapState.layers.push(phoneMarker);
-    boundsPoints.push(sourceLatLng(data.current));
-  }
+  const boundsPoints = [...completedRoute, toLatLng(routePoint)];
 
   const bounds = L.latLngBounds(boundsPoints);
   mapState.map.fitBounds(bounds, { padding: [36, 36] });
