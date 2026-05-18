@@ -22,6 +22,22 @@ const formatMiles = (value) =>
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+function setText(selector, value) {
+  const element = document.querySelector(selector);
+
+  if (element) {
+    element.textContent = value;
+  }
+}
+
+function setStyle(selector, property, value) {
+  const element = document.querySelector(selector);
+
+  if (element) {
+    element.style[property] = value;
+  }
+}
+
 function toLatLng(point) {
   return [point.lat, point.lng];
 }
@@ -135,11 +151,15 @@ function formatDuration(startDate) {
 
 function renderGoals(goals = []) {
   const list = document.querySelector("#goals-list");
-  const count = document.querySelector("#goals-count");
   const completed = goals.filter((goal) => goal.done).length;
 
+  setText("#goals-count", `${completed}/${goals.length}`);
+
+  if (!list) {
+    return;
+  }
+
   list.innerHTML = "";
-  count.textContent = `${completed}/${goals.length}`;
 
   goals.forEach((goal) => {
     const item = document.createElement("li");
@@ -169,22 +189,29 @@ function renderSocialLinks(data) {
   const facebookLink = document.querySelector("#facebook-link");
   const venmoLink = document.querySelector("#venmo-link");
 
-  instagramLink.href = instagramUrl;
-  facebookLink.href = facebookUrl;
-  venmoLink.href = venmoUrl;
+  if (instagramLink) {
+    instagramLink.href = instagramUrl;
+    instagramLink.onclick = (event) => {
+      event.preventDefault();
+      window.location.assign(instagramUrl);
+    };
+  }
 
-  instagramLink.onclick = (event) => {
-    event.preventDefault();
-    window.location.assign(instagramUrl);
-  };
-  facebookLink.onclick = (event) => {
-    event.preventDefault();
-    window.location.assign(facebookUrl);
-  };
-  venmoLink.onclick = (event) => {
-    event.preventDefault();
-    window.location.assign(venmoUrl);
-  };
+  if (facebookLink) {
+    facebookLink.href = facebookUrl;
+    facebookLink.onclick = (event) => {
+      event.preventDefault();
+      window.location.assign(facebookUrl);
+    };
+  }
+
+  if (venmoLink) {
+    venmoLink.href = venmoUrl;
+    venmoLink.onclick = (event) => {
+      event.preventDefault();
+      window.location.assign(venmoUrl);
+    };
+  }
 }
 
 function renderStats(data) {
@@ -192,27 +219,24 @@ function renderStats(data) {
   const percent = Math.round(progress * 100);
 
   document.title = `${percent}% complete - ${data.title}`;
-  document.querySelector("#ride-title").textContent = data.title;
-  document.querySelector("#ride-subtitle").textContent =
-    data.subtitle || "Following the road east.";
-  document.querySelector("#ride-status").textContent = data.status;
-  document.querySelector("#ride-clock").textContent = formatDuration(data.startedAt);
-  document.querySelector("#current-place").textContent = data.current.place;
-  document.querySelector("#last-updated").textContent =
-    `Last updated ${data.current.updatedAt}`;
-  document.querySelector("#phone-location").textContent = hasSourceLocation(data.current)
-    ? `Phone GPS ${formatCoordinate(data.current.sourceLat)}, ${formatCoordinate(
-        data.current.sourceLng,
-      )}`
-    : "";
-  document.querySelector("#miles-ridden").textContent = formatMiles(
-    data.current.miles,
+  setText("#ride-title", data.title);
+  setText("#ride-subtitle", data.subtitle || "Following the road east.");
+  setText("#ride-status", data.status);
+  setText("#ride-clock", formatDuration(data.startedAt));
+  setText("#current-place", data.current.place);
+  setText("#last-updated", `Last updated ${data.current.updatedAt}`);
+  setText(
+    "#phone-location",
+    hasSourceLocation(data.current)
+      ? `Phone GPS ${formatCoordinate(data.current.sourceLat)}, ${formatCoordinate(
+          data.current.sourceLng,
+        )}`
+      : "",
   );
-  document.querySelector("#miles-left").textContent = formatMiles(
-    Math.max(data.totalMiles - data.current.miles, 0),
-  );
-  document.querySelector("#progress-percent").textContent = `${percent}%`;
-  document.querySelector("#progress-fill").style.width = `${percent}%`;
+  setText("#miles-ridden", formatMiles(data.current.miles));
+  setText("#miles-left", formatMiles(Math.max(data.totalMiles - data.current.miles, 0)));
+  setText("#progress-percent", `${percent}%`);
+  setStyle("#progress-fill", "width", `${percent}%`);
 
   return progress;
 }
@@ -324,7 +348,7 @@ async function init() {
 }
 
 init().catch((error) => {
-  document.querySelector("#ride-status").textContent = "Needs data";
-  document.querySelector("#current-place").textContent = "Could not load tracker";
-  document.querySelector("#last-updated").textContent = error.message;
+  setText("#ride-status", "Needs data");
+  setText("#current-place", "Could not load tracker");
+  setText("#last-updated", error.message);
 });
