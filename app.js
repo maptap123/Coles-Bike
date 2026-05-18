@@ -1,11 +1,11 @@
 const completedTrailBaseStyle = {
-  color: "#ffffff",
-  weight: 10,
-  opacity: 0.18,
+  color: "#1a0a20",
+  weight: 11,
+  opacity: 0.3,
 };
 const completedTrailStyle = {
-  weight: 5,
-  opacity: 0.55,
+  weight: 6,
+  opacity: 0.88,
   lineCap: "round",
   lineJoin: "round",
 };
@@ -16,11 +16,12 @@ function lerpChannel(a, b, t) {
 }
 
 function trailColorAt(t) {
+  // red → rose-white → navy, skipping pure white so it stays visible on the map
   const red = [191, 10, 48];
-  const white = [240, 235, 220];
+  const mid = [210, 180, 190];
   const navy = [0, 40, 104];
-  const [r1, g1, b1] = t < 0.5 ? red : white;
-  const [r2, g2, b2] = t < 0.5 ? white : navy;
+  const [r1, g1, b1] = t < 0.5 ? red : mid;
+  const [r2, g2, b2] = t < 0.5 ? mid : navy;
   const u = t < 0.5 ? t * 2 : (t - 0.5) * 2;
   return `rgb(${lerpChannel(r1, r2, u)},${lerpChannel(g1, g2, u)},${lerpChannel(b1, b2, u)})`;
 }
