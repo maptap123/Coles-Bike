@@ -24,6 +24,7 @@
 html,
 body {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -38,18 +39,18 @@ body {
 .tracker-shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .map-panel {
   position: relative;
-  min-height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
 .map {
   height: 100%;
-  min-height: 100vh;
   background: #c8d5e8;
 }
 
@@ -191,7 +192,7 @@ h2 {
   display: grid;
   align-content: start;
   gap: 18px;
-  min-height: 100vh;
+  height: 100%;
   padding: 22px;
   border-left: 3px solid var(--gold);
   background: var(--navy);
@@ -601,17 +602,24 @@ h2 {
 /* ── Responsive ── */
 
 @media (max-width: 900px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
   .tracker-shell {
     grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
   }
 
   .map-panel,
   .map {
-    min-height: 58vh;
+    height: 58vh;
   }
 
   .sidebar {
-    min-height: auto;
+    height: auto;
     border-left: 0;
     border-top: 3px solid var(--gold);
   }
