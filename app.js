@@ -145,92 +145,24 @@ function renderGoals(goals = []) {
   });
 }
 
-function facebookLocationUrl(place) {
-  const query = encodeURIComponent(place || "Latest ride location");
-  return `https://www.facebook.com/search/places/?q=${query}`;
-}
+function renderSocialLinks(data) {
+  const instagramUrl = data.instagram?.url || "https://www.instagram.com/colethe_dude";
+  const facebookUrl =
+    data.facebookLocation?.url || "https://www.facebook.com/cole.jenkins.924808";
+  const instagramLink = document.querySelector("#instagram-link");
+  const facebookLink = document.querySelector("#facebook-link");
 
-function renderFacebookLocation(data) {
-  const place = data.facebookLocation?.place || data.current.place;
-  const url = data.facebookLocation?.url || facebookLocationUrl(place);
-  const link = document.querySelector("#facebook-location-link");
-  const label = document.querySelector("#facebook-location-place");
+  instagramLink.href = instagramUrl;
+  facebookLink.href = facebookUrl;
 
-  label.textContent = place;
-  link.href = url;
-  link.onclick = (event) => {
-    event.preventDefault();
-    window.location.assign(url);
-  };
-}
-
-async function loadInstagramPosts(instagram) {
-  try {
-    const response = await fetch("/api/instagram", { cache: "no-store" });
-
-    if (!response.ok) {
-      throw new Error("Instagram feed is not connected.");
-    }
-
-    const feed = await response.json();
-    return Array.isArray(feed.posts) ? feed.posts : [];
-  } catch {
-    return instagram.posts || [];
-  }
-}
-
-async function renderInstagram(instagram = {}) {
-  const link = document.querySelector("#instagram-link");
-  const grid = document.querySelector("#instagram-grid");
-  const posts = await loadInstagramPosts(instagram);
-  const instagramUrl = instagram.url || "https://www.instagram.com/";
-
-  link.href = instagramUrl;
-  link.onclick = (event) => {
+  instagramLink.onclick = (event) => {
     event.preventDefault();
     window.location.assign(instagramUrl);
   };
-  grid.innerHTML = "";
-
-  const visiblePosts =
-    posts.length > 0
-      ? posts.slice(0, 4)
-      : [
-          {
-            title: "Open Instagram",
-            caption: "See the latest ride posts",
-            url: instagramUrl,
-          },
-        ];
-
-  visiblePosts.forEach((post) => {
-    const card = document.createElement("a");
-    const caption = document.createElement("span");
-
-    card.className = "instagram-card";
-    card.href = post.url || instagramUrl;
-    card.rel = "noreferrer";
-    card.addEventListener("click", (event) => {
-      event.preventDefault();
-      window.location.assign(card.href);
-    });
-    caption.textContent = post.caption || "Ride update";
-
-    if (post.image) {
-      const image = document.createElement("img");
-      image.src = post.image;
-      image.alt = post.caption || "Instagram ride update";
-      card.append(image);
-    } else {
-      const fallback = document.createElement("div");
-      fallback.className = "instagram-fallback";
-      fallback.textContent = post.title || "Ride post";
-      card.append(fallback);
-    }
-
-    card.append(caption);
-    grid.append(card);
-  });
+  facebookLink.onclick = (event) => {
+    event.preventDefault();
+    window.location.assign(facebookUrl);
+  };
 }
 
 function renderStats(data) {
@@ -332,9 +264,8 @@ function renderMap(data, progress) {
 async function refreshProgress() {
   const data = await loadProgress();
   const progress = renderStats(data);
-  renderFacebookLocation(data);
   renderGoals(data.goals || []);
-  await renderInstagram(data.instagram || {});
+  renderSocialLinks(data);
   renderMap(data, progress);
 }
 
