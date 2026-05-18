@@ -11,12 +11,15 @@ function isAuthorized(request) {
     return false;
   }
 
-  return request.headers.authorization === `Bearer ${secret}`;
+  return (
+    request.headers.authorization === `Bearer ${secret}` ||
+    request.query?.secret === secret
+  );
 }
 
 export default async function handler(request, response) {
-  if (request.method !== "POST") {
-    response.setHeader("Allow", "POST");
+  if (!["GET", "POST"].includes(request.method)) {
+    response.setHeader("Allow", "GET, POST");
     return response.status(405).json({ error: "Method not allowed" });
   }
 
@@ -26,7 +29,8 @@ export default async function handler(request, response) {
 
   try {
     const progress = await readProgress();
-    const nextProgress = applyLocationUpdate(progress, request.body || {});
+    const update = request.method === "GET" ? request.query : request.body || {};
+    const nextProgress = applyLocationUpdate(progress, update);
 
     await writeProgress(nextProgress);
 
