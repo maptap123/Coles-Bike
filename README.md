@@ -14,6 +14,8 @@ Create a Vercel Blob store for the project, then add these environment variables
 
 - `BLOB_READ_WRITE_TOKEN`: created by Vercel Blob
 - `TRACKER_UPDATE_SECRET`: a long random password for location updates
+- `INSTAGRAM_ACCESS_TOKEN`: Instagram Graph API token used to load the latest four posts
+- `INSTAGRAM_USER_ID`: optional Instagram user ID; defaults to `me`
 - `CRON_SECRET`: optional long random password for the scheduled refresh endpoint
 - `LOCATION_FEED_URL`: optional JSON feed for a scheduled refresh endpoint
 - `LOCATION_FEED_SECRET`: optional bearer token for that feed
@@ -59,7 +61,7 @@ Every successful update moves the current marker and appends a point to `actualP
 
 For an hourly phone setup, use an automation app such as Shortcuts on iPhone or MacroDroid/Tasker on Android. Configure it to collect the current GPS coordinates and send the JSON body above once an hour.
 
-The completed line on the map follows the planned route instead of drawing straight lines between hourly phone updates. The starter route in `data/progress.json` points at `https://ridewithgps.com/routes/54272880`; the API fetches and simplifies that route before serving progress.
+The completed line on the map follows the planned route instead of drawing straight lines between hourly phone updates. The starter route in `data/progress.json` comes from `https://ridewithgps.com/routes/54272880` and includes simplified mile markers for the full path.
 
 ## Edit the Starter Route
 
@@ -70,7 +72,7 @@ Edit `data/progress.json`:
 - `routeSource`: the planned Ride with GPS route URL
 - `actualPath`: the real path published so far
 - `facebookLocation`: optional override for the Facebook profile or place link
-- `instagram`: Instagram profile and tile links
+- `instagram`: Instagram profile link and optional fallback post links
 
 ## Local Preview
 
