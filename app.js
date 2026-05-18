@@ -1,16 +1,29 @@
-const completedTrailColors = ["#c92932", "#fffaf1", "#1d4f8f"];
 const completedTrailBaseStyle = {
-  color: "#102022",
-  weight: 8,
-  opacity: 0.26,
+  color: "#ffffff",
+  weight: 10,
+  opacity: 0.18,
 };
 const completedTrailStyle = {
   weight: 5,
-  opacity: 0.96,
+  opacity: 0.55,
   lineCap: "round",
   lineJoin: "round",
 };
-const TRAIL_POINTS_PER_COLOR = 4;
+const TRAIL_SEGMENT_SIZE = 3;
+
+function lerpChannel(a, b, t) {
+  return Math.round(a + (b - a) * t);
+}
+
+function trailColorAt(t) {
+  const red = [191, 10, 48];
+  const white = [240, 235, 220];
+  const navy = [0, 40, 104];
+  const [r1, g1, b1] = t < 0.5 ? red : white;
+  const [r2, g2, b2] = t < 0.5 ? white : navy;
+  const u = t < 0.5 ? t * 2 : (t - 0.5) * 2;
+  return `rgb(${lerpChannel(r1, r2, u)},${lerpChannel(g1, g2, u)},${lerpChannel(b1, b2, u)})`;
+}
 
 const REFRESH_INTERVAL_MS = 60 * 1000;
 
@@ -178,21 +191,18 @@ function routeColorSegments(route) {
 
   const segments = [];
   let startIndex = 0;
-  let colorIndex = 0;
+  const last = route.length - 1;
 
-  while (startIndex < route.length - 1) {
-    const endIndex = Math.min(
-      startIndex + TRAIL_POINTS_PER_COLOR,
-      route.length - 1,
-    );
+  while (startIndex < last) {
+    const endIndex = Math.min(startIndex + TRAIL_SEGMENT_SIZE, last);
+    const t = last === 0 ? 0 : (startIndex + endIndex) / 2 / last;
 
     segments.push({
-      color: completedTrailColors[colorIndex % completedTrailColors.length],
+      color: trailColorAt(t),
       points: route.slice(startIndex, endIndex + 1),
     });
 
     startIndex = endIndex;
-    colorIndex += 1;
   }
 
   return segments;
