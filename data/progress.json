@@ -34,19 +34,19 @@
       "done": false
     },
     {
-      "label": "Have a rival",
-      "done": false
+      "label": "Have a meal made",
+      "done": true
     },
     {
       "label": "Have a meal bought",
-      "done": false
+      "done": true
     },
     {
       "label": "Find Winnie the Pooh",
       "done": false
     },
     {
-      "label": "Find 13 other countries",
+      "label": "Find people from 13 different countries",
       "done": false
     },
     {
@@ -54,7 +54,7 @@
       "done": false
     },
     {
-      "label": "Find a dollar for 1 mile",
+      "label": "Find a riding partner for at least a mile",
       "done": false
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "label": "Eat a new food",
-      "done": false
+      "done": true
     },
     {
       "label": "Sleep under a bridge",
@@ -83,10 +83,6 @@
     },
     {
       "label": "Find a wife",
-      "done": false
-    },
-    {
-      "label": "DIE",
       "done": false
     },
     {
