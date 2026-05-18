@@ -1,20 +1,16 @@
-const completedStripeStyles = [
-  {
-    color: "#1d4f8f",
-    weight: 14,
-    opacity: 0.92,
-  },
-  {
-    color: "#fffaf1",
-    weight: 9,
-    opacity: 0.96,
-  },
-  {
-    color: "#c92932",
-    weight: 4,
-    opacity: 0.98,
-  },
-];
+const completedTrailColors = ["#c92932", "#fffaf1", "#1d4f8f"];
+const completedTrailBaseStyle = {
+  color: "#102022",
+  weight: 8,
+  opacity: 0.26,
+};
+const completedTrailStyle = {
+  weight: 5,
+  opacity: 0.96,
+  lineCap: "round",
+  lineJoin: "round",
+};
+const TRAIL_POINTS_PER_COLOR = 4;
 
 const REFRESH_INTERVAL_MS = 60 * 1000;
 
@@ -135,6 +131,50 @@ function completedRouteFor(data) {
   completedRoute.push([bestMatch.lat, bestMatch.lng]);
 
   return completedRoute;
+}
+
+function routeColorSegments(route) {
+  if (!Array.isArray(route) || route.length <= 1) {
+    return [];
+  }
+
+  const segments = [];
+  let startIndex = 0;
+  let colorIndex = 0;
+
+  while (startIndex < route.length - 1) {
+    const endIndex = Math.min(
+      startIndex + TRAIL_POINTS_PER_COLOR,
+      route.length - 1,
+    );
+
+    segments.push({
+      color: completedTrailColors[colorIndex % completedTrailColors.length],
+      points: route.slice(startIndex, endIndex + 1),
+    });
+
+    startIndex = endIndex;
+    colorIndex += 1;
+  }
+
+  return segments;
+}
+
+function drawCompletedTrail(map, route) {
+  if (!Array.isArray(route) || route.length <= 1) {
+    return;
+  }
+
+  mapState.layers.push(L.polyline(route, completedTrailBaseStyle).addTo(map));
+
+  routeColorSegments(route).forEach((segment) => {
+    mapState.layers.push(
+      L.polyline(segment.points, {
+        ...completedTrailStyle,
+        color: segment.color,
+      }).addTo(map),
+    );
+  });
 }
 
 function formatDuration(startDate) {
@@ -304,9 +344,7 @@ function renderMap(data, progress) {
   const routePoint = closestPointOnRoute(data.current, data.route);
   const destination = lastRoutePoint(data.route);
 
-  completedStripeStyles.forEach((style) => {
-    mapState.layers.push(L.polyline(completedRoute, style).addTo(mapState.map));
-  });
+  drawCompletedTrail(mapState.map, completedRoute);
 
   const markerIcon = L.divIcon({
     className: "ride-marker",
