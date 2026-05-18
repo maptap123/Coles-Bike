@@ -207,12 +207,12 @@ h2 {
   border: 1px solid rgba(201, 168, 76, 0.35);
   border-radius: 5px;
   padding: 18px;
-  position: relative;
   overflow: hidden;
 }
 
 .panel {
   background: rgba(255, 255, 255, 0.06);
+  position: relative;
 }
 
 .panel::after {
