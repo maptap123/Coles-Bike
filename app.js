@@ -1,13 +1,13 @@
 const TRAIL_CASING_STYLE = {
   color: "#001540",
-  weight: 9,
-  opacity: 0.85,
+  weight: 6,
+  opacity: 0.8,
   lineCap: "round",
   lineJoin: "round",
 };
 const TRAIL_FILL_STYLE = {
   color: "#CC0029",
-  weight: 5,
+  weight: 3,
   opacity: 1,
   lineCap: "round",
   lineJoin: "round",
@@ -316,9 +316,9 @@ function createMap() {
   });
 
   L.control.zoom({ position: "bottomleft" }).addTo(map);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: "&copy; OpenStreetMap contributors",
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
   }).addTo(map);
 
   return map;
