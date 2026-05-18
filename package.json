@@ -1,0 +1,16 @@
+{
+  "name": "bike-across-america-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "check": "node --check app.js && node --check lib/progressStore.js && node --check api/progress.js && node --check api/location.js && node --check api/refresh-location.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.3.3"
+  },
+  "devDependencies": {
+    "vercel": "^48.0.0"
+  }
+}

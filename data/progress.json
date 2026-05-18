@@ -1,0 +1,119 @@
+{
+  "title": "My American Dream",
+  "subtitle": "Following the planned Ride with GPS route from 48.121, -123.432 to 39.51, -74.32.",
+  "status": "On the road",
+  "startedAt": "2026-04-01T08:00:00-04:00",
+  "routeStart": {
+    "place": "Shoreline, WA",
+    "lat": 47.76433,
+    "lng": -122.387336
+  },
+  "totalMiles": 3820.5,
+  "current": {
+    "place": "Route start",
+    "lat": 48.1212,
+    "lng": -123.43151,
+    "sourceLat": 48.1212,
+    "sourceLng": -123.43151,
+    "miles": 0,
+    "updatedAt": "Trip start"
+  },
+  "actualPath": [
+    {
+      "place": "Route start",
+      "lat": 48.1212,
+      "lng": -123.43151,
+      "sourceLat": 48.1212,
+      "sourceLng": -123.43151,
+      "miles": 0,
+      "updatedAt": "Trip start"
+    }
+  ],
+  "goals": [
+    {
+      "label": "Evolve Pokemon",
+      "done": false
+    },
+    {
+      "label": "Finish Pokedex",
+      "done": false
+    },
+    {
+      "label": "Have a meal made",
+      "done": true
+    },
+    {
+      "label": "Have a meal bought",
+      "done": true
+    },
+    {
+      "label": "Find Winnie the Pooh",
+      "done": false
+    },
+    {
+      "label": "Find people from 13 different countries",
+      "done": false
+    },
+    {
+      "label": "Go swimming",
+      "done": false
+    },
+    {
+      "label": "Find a riding partner for at least a mile",
+      "done": false
+    },
+    {
+      "label": "Watch a baseball game",
+      "done": false
+    },
+    {
+      "label": "Play a local game",
+      "done": false
+    },
+    {
+      "label": "Play a card game",
+      "done": false
+    },
+    {
+      "label": "See a shooting star",
+      "done": false
+    },
+    {
+      "label": "Eat a new food",
+      "done": true
+    },
+    {
+      "label": "Sleep under a bridge",
+      "done": false
+    },
+    {
+      "label": "Find a wife",
+      "done": false
+    },
+    {
+      "label": "Go to a fair",
+      "done": false
+    },
+    {
+      "label": "Join a bonfire",
+      "done": false
+    },
+    {
+      "label": "Read a book to someone",
+      "done": false
+    }
+  ],
+  "instagram": {
+    "url": "https://www.instagram.com/colethe_dude"
+  },
+  "facebookLocation": {
+    "place": "Cole Jenkins on Facebook",
+    "url": "https://www.facebook.com/cole.jenkins.924808"
+  },
+  "venmo": {
+    "handle": "@colecampguy",
+    "url": "https://venmo.com/u/colecampguy"
+  },
+  "routeId": "54272880",
+  "routeSource": "https://ridewithgps.com/routes/54272880"
+}

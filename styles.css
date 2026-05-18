@@ -1,0 +1,675 @@
+:root {
+  --navy: #002868;
+  --navy-dark: #001540;
+  --navy-mid: #003a8c;
+  --red: #bf0a30;
+  --red-dark: #8b0621;
+  --parchment: #f5e8cc;
+  --parchment-mid: #e8d5a8;
+  --parchment-dark: #cdb87a;
+  --cream: #fdf8f0;
+  --ink: #1a0f07;
+  --ink-muted: #5c4a2a;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --star: #ffd700;
+  --shadow: 0 18px 45px rgba(0, 20, 64, 0.28);
+  --shadow-red: 0 12px 28px rgba(191, 10, 48, 0.32);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+}
+
+/* ── Layout ── */
+
+.tracker-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+  min-height: 100vh;
+}
+
+.map-panel {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.map {
+  height: 100%;
+  min-height: 100vh;
+  background: #c8d5e8;
+}
+
+/* ── Map overlay ── */
+
+.map-overlay {
+  position: absolute;
+  inset: 24px 24px auto 24px;
+  z-index: 500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--gold-light);
+  font-family: "Oswald", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "★ ";
+  color: var(--star);
+}
+
+.eyebrow::after {
+  content: " ★";
+  color: var(--star);
+}
+
+h1,
+h2,
+p {
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  margin: 0;
+  max-width: min(620px, 72vw);
+  color: var(--cream);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.2rem, 6vw, 5.7rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.94;
+  text-shadow:
+    0 4px 28px rgba(0, 20, 64, 0.7),
+    0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+h2 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.map-subtitle {
+  max-width: min(540px, 66vw);
+  margin: 14px 0 0;
+  color: var(--parchment-mid);
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.35;
+  text-shadow: 0 3px 16px rgba(0, 20, 64, 0.55);
+}
+
+/* ── Status pills ── */
+
+.status-pill {
+  flex: 0 0 auto;
+  max-width: 200px;
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  padding: 8px 14px;
+  background: rgba(0, 40, 104, 0.9);
+  color: var(--gold-light);
+  font-family: "Oswald", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: var(--shadow), inset 0 0 0 1px rgba(255, 215, 0, 0.08);
+}
+
+.map-badges {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.status-pill.secondary {
+  background: rgba(253, 248, 240, 0.94);
+  border-color: var(--parchment-dark);
+  color: var(--navy);
+}
+
+/* ── Map progress card ── */
+
+.map-progress-card {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 510;
+  width: min(430px, calc(100% - 48px));
+  box-shadow: var(--shadow);
+}
+
+.map-progress-card .eyebrow {
+  color: var(--red);
+}
+
+.map-progress-card .eyebrow::before,
+.map-progress-card .eyebrow::after {
+  color: var(--red);
+}
+
+.map-progress-card h2 {
+  color: var(--navy);
+}
+
+.map-progress-card .muted {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* ── Sidebar ── */
+
+.sidebar {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-height: 100vh;
+  padding: 22px;
+  border-left: 3px solid var(--gold);
+  background: var(--navy);
+  box-shadow: -14px 0 42px rgba(0, 20, 64, 0.22);
+  z-index: 600;
+  overflow-y: auto;
+}
+
+/* ── Cards / panels ── */
+
+.summary,
+.panel {
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 5px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.panel::after {
+  content: "★";
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: rgba(255, 215, 0, 0.12);
+  font-size: 2rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.panel h2 {
+  color: var(--cream);
+}
+
+.summary {
+  background: rgba(253, 248, 240, 0.97);
+  border: 1px solid var(--parchment-dark);
+}
+
+.muted {
+  margin: 7px 0 0;
+  color: rgba(253, 248, 240, 0.5);
+  font-family: "EB Garamond", serif;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.mini-stat {
+  border-radius: 3px;
+  padding: 5px 10px;
+  background: rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--gold-light);
+  font-family: "Oswald", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ── Distance grid ── */
+
+.distance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.distance-grid div {
+  min-width: 0;
+  border-radius: 4px;
+  padding: 12px 10px;
+  background: rgba(0, 40, 104, 0.07);
+  border: 1px solid rgba(0, 40, 104, 0.12);
+  text-align: center;
+}
+
+.sidebar .distance-grid div {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(201, 168, 76, 0.2);
+}
+
+.distance-grid span {
+  display: block;
+  color: var(--navy);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.sidebar .distance-grid span {
+  color: var(--gold-light);
+}
+
+.distance-grid small {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink-muted);
+  font-family: "EB Garamond", serif;
+  font-size: 0.75rem;
+  line-height: 1.15;
+}
+
+.sidebar .distance-grid small {
+  color: rgba(253, 248, 240, 0.5);
+}
+
+/* ── Progress bar ── */
+
+.progress-track {
+  height: 12px;
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--parchment-mid);
+  border: 1px solid var(--parchment-dark);
+}
+
+#progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--red) 0%, #f5f5f5 50%, var(--navy) 100%);
+  transition: width 400ms ease;
+}
+
+/* ── Section headers ── */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.22);
+}
+
+.section-header a {
+  color: var(--gold-light);
+  font-family: "Oswald", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.section-header a:focus,
+.section-header a:hover {
+  text-decoration: underline;
+}
+
+.action-link {
+  display: inline-grid;
+  min-width: 58px;
+  min-height: 34px;
+  place-items: center;
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--gold-light);
+  cursor: pointer;
+}
+
+/* ── Goals list ── */
+
+#goals-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#goals-list li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  min-height: 34px;
+}
+
+.goal-box {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 2px solid rgba(201, 168, 76, 0.35);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--star);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.goal-box.complete {
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.18);
+}
+
+.goal-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.goal-text strong {
+  color: var(--cream);
+  font-family: "EB Garamond", serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.goal-text span {
+  color: rgba(253, 248, 240, 0.45);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* ── Main goals ── */
+
+.main-goals-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-goals-list li {
+  position: relative;
+  min-height: 28px;
+  padding-left: 26px;
+  color: var(--cream);
+  font-family: "EB Garamond", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.main-goals-list li::before {
+  position: absolute;
+  top: 0.1em;
+  left: 0;
+  content: "★";
+  color: var(--star);
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+/* ── Social buttons ── */
+
+.social-button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.social-button {
+  display: inline-grid;
+  min-width: 0;
+  min-height: 48px;
+  place-items: center;
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--gold-light);
+  font-family: "Oswald", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 180ms,
+    border-color 180ms,
+    color 180ms;
+}
+
+.social-button:focus,
+.social-button:hover {
+  background: rgba(201, 168, 76, 0.2);
+  border-color: var(--gold);
+  color: var(--star);
+}
+
+/* ── Donate panel ── */
+
+.donate-panel {
+  display: grid;
+  gap: 14px;
+  border-color: rgba(191, 10, 48, 0.45);
+  background: linear-gradient(
+      135deg,
+      rgba(191, 10, 48, 0.25),
+      rgba(139, 6, 33, 0.35)
+    ),
+    rgba(255, 255, 255, 0.03);
+  box-shadow: 0 14px 34px rgba(191, 10, 48, 0.2);
+}
+
+.donate-panel .eyebrow {
+  color: var(--gold-light);
+}
+
+.donate-panel .eyebrow::before,
+.donate-panel .eyebrow::after {
+  color: var(--star);
+}
+
+.donation-button {
+  display: inline-grid;
+  min-height: 56px;
+  place-items: center;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  background: var(--red);
+  color: var(--cream);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow:
+    var(--shadow-red),
+    inset 0 1px 0 rgba(255, 215, 0, 0.18);
+  cursor: pointer;
+  transition:
+    background 180ms,
+    transform 150ms,
+    box-shadow 180ms;
+}
+
+.donation-button:focus,
+.donation-button:hover {
+  background: var(--red-dark);
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 36px rgba(191, 10, 48, 0.48),
+    inset 0 1px 0 rgba(255, 215, 0, 0.18);
+}
+
+/* ── Map markers ── */
+
+.leaflet-control-attribution {
+  font-size: 0.68rem;
+}
+
+.ride-marker {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 3px solid var(--cream);
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 8px 22px rgba(0, 20, 64, 0.5);
+}
+
+.ride-marker::after {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cream);
+  content: "";
+}
+
+.destination-marker {
+  position: relative;
+  width: 30px;
+  height: 42px;
+}
+
+.destination-marker::before {
+  position: absolute;
+  inset: 0 3px 12px;
+  border: 3px solid var(--cream);
+  border-radius: 50% 50% 50% 0;
+  background: var(--navy);
+  box-shadow: 0 8px 22px rgba(0, 20, 64, 0.5);
+  content: "";
+  transform: rotate(-45deg);
+}
+
+.destination-marker::after {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  content: "";
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+  .tracker-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .map-panel,
+  .map {
+    min-height: 58vh;
+  }
+
+  .sidebar {
+    min-height: auto;
+    border-left: 0;
+    border-top: 3px solid var(--gold);
+  }
+
+  .map-overlay {
+    inset: 16px;
+  }
+
+  .map-progress-card {
+    right: 16px;
+    bottom: 16px;
+    width: min(390px, calc(100% - 32px));
+  }
+
+  .map-badges {
+    justify-items: start;
+  }
+
+  h1 {
+    max-width: 74vw;
+  }
+
+  .map-subtitle {
+    max-width: 78vw;
+  }
+}
+
+@media (max-width: 520px) {
+  .map-overlay {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .map-progress-card {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin: 12px 14px 14px;
+  }
+
+  .status-pill {
+    align-self: flex-start;
+  }
+
+  .sidebar {
+    padding: 14px;
+  }
+
+  .distance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-progress-card .distance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .social-button-grid {
+    grid-template-columns: 1fr;
+  }
+}

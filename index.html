@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ride Across America — America 250</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Oswald:wght@500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="tracker-shell">
+      <section class="map-panel" aria-label="Ride map">
+        <div id="map" class="map"></div>
+        <div class="map-overlay">
+          <div>
+            <p class="eyebrow">America 250 &middot; 1776&ndash;2026</p>
+            <h1 id="ride-title">Bike Across America</h1>
+            <p id="ride-subtitle" class="map-subtitle">Following the road east.</p>
+          </div>
+          <div class="map-badges">
+            <div class="status-pill" id="ride-status">Loading</div>
+            <div class="status-pill secondary" id="ride-clock">0 days</div>
+          </div>
+        </div>
+        <section class="summary map-progress-card" aria-label="Current ride progress">
+          <div>
+            <p class="eyebrow">Current location</p>
+            <h2 id="current-place">Loading route</h2>
+            <p id="last-updated" class="muted">Waiting for latest check-in</p>
+          </div>
+          <div class="distance-grid">
+            <div>
+              <span id="miles-ridden">0</span>
+              <small>miles ridden</small>
+            </div>
+            <div>
+              <span id="miles-left">0</span>
+              <small>miles to go</small>
+            </div>
+            <div>
+              <span id="progress-percent">0%</span>
+              <small>complete</small>
+            </div>
+          </div>
+          <div class="progress-track" aria-label="Ride completion">
+            <div id="progress-fill"></div>
+          </div>
+        </section>
+      </section>
+
+      <aside class="sidebar" aria-label="Ride progress">
+        <section class="panel donate-panel">
+          <div>
+            <p class="eyebrow">Support the ride</p>
+            <h2>Fuel Cole's next miles</h2>
+          </div>
+          <a
+            id="venmo-link"
+            class="donation-button"
+            href="https://venmo.com/u/colecampguy"
+            rel="noreferrer"
+          >
+            Donate
+          </a>
+        </section>
+
+        <section class="panel social-links">
+          <div class="section-header">
+            <h2>Follow Cole</h2>
+          </div>
+          <div class="social-button-grid">
+            <a
+              id="instagram-link"
+              class="social-button"
+              href="https://www.instagram.com/colethe_dude"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
+            <a
+              id="facebook-link"
+              class="social-button"
+              href="https://www.facebook.com/cole.jenkins.924808"
+              rel="noreferrer"
+            >
+              Facebook
+            </a>
+          </div>
+        </section>
+
+        <section class="panel main-goals">
+          <div class="section-header">
+            <h2>Main Goals</h2>
+          </div>
+          <ul class="main-goals-list">
+            <li>Bike from sea to shining sea</li>
+            <li>Share the gospel with those Cole meets</li>
+            <li>Read the Declaration of Independence</li>
+          </ul>
+        </section>
+
+        <section class="panel goals">
+          <div class="section-header">
+            <h2>Side Quests</h2>
+            <span id="goals-count" class="mini-stat">0/0</span>
+          </div>
+          <ul id="goals-list"></ul>
+        </section>
+      </aside>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
