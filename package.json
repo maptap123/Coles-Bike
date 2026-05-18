@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "check": "node --check app.js && node --check lib/progressStore.js && node --check api/progress.js && node --check api/location.js && node --check api/refresh-location.js && node --check api/instagram.js"
+    "check": "node --check app.js && node --check lib/progressStore.js && node --check api/progress.js && node --check api/location.js && node --check api/refresh-location.js"
   },
   "dependencies": {
     "@vercel/blob": "^2.3.3"
