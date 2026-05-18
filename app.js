@@ -183,26 +183,28 @@ function drawCompletedTrail(map, route) {
   mapState.layers.push(L.polyline(route, TRAIL_FILL_STYLE).addTo(map));
 }
 
+let _clockStart = null;
+let _clockTimer = null;
+
 function formatDuration(startDate) {
-  if (!startDate) {
-    return "0 days";
-  }
-
+  if (!startDate) return "0d 0h 0m 0s";
   const start = new Date(startDate);
+  if (Number.isNaN(start.getTime())) return "0d 0h 0m 0s";
+  const ms = Math.max(Date.now() - start.getTime(), 0);
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor((ms % 86400000) / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return d > 0 ? `${d}d ${h}h ${m}m ${s}s` : `${h}h ${m}m ${s}s`;
+}
 
-  if (Number.isNaN(start.getTime())) {
-    return "0 days";
-  }
-
-  const elapsedMs = Math.max(Date.now() - start.getTime(), 0);
-  const days = Math.floor(elapsedMs / 86400000);
-  const hours = Math.floor((elapsedMs % 86400000) / 3600000);
-
-  if (days <= 0) {
-    return `${hours} hours riding`;
-  }
-
-  return `${days} days ${hours} hours`;
+function startClock(startDate) {
+  _clockStart = startDate;
+  if (_clockTimer) clearInterval(_clockTimer);
+  setText("#ride-clock", formatDuration(_clockStart));
+  _clockTimer = setInterval(() => {
+    setText("#ride-clock", formatDuration(_clockStart));
+  }, 1000);
 }
 
 function renderGoals(goals = []) {
@@ -278,7 +280,7 @@ function renderStats(data) {
   setText("#ride-title", data.title);
   setText("#ride-subtitle", data.subtitle || "Following the road east.");
   setText("#ride-status", data.status);
-  setText("#ride-clock", formatDuration(data.startedAt));
+  startClock(data.startedAt);
   setText("#current-place", data.current.place);
   setText("#last-updated", `Last updated ${data.current.updatedAt}`);
   setText("#miles-ridden", formatMiles(data.current.miles));
