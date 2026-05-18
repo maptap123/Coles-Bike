@@ -26,24 +26,62 @@ function toLatLng(point) {
   return [point.lat, point.lng];
 }
 
-function splitRouteByProgress(route, progress) {
-  const pointCount = route.length;
-  const visibleCount = clamp(Math.ceil(pointCount * progress), 1, pointCount);
-  return route.slice(0, visibleCount);
+function projectPointOnSegment(point, segmentStart, segmentEnd) {
+  const startLat = Number(segmentStart.lat);
+  const startLng = Number(segmentStart.lng);
+  const endLat = Number(segmentEnd.lat);
+  const endLng = Number(segmentEnd.lng);
+  const pointLat = Number(point.lat);
+  const pointLng = Number(point.lng);
+  const latScale = 69;
+  const lngScale =
+    Math.cos(((startLat + endLat) / 2) * Math.PI / 180) * latScale;
+  const latDelta = endLat - startLat;
+  const lngDelta = endLng - startLng;
+  const scaledLatDelta = latDelta * latScale;
+  const scaledLngDelta = lngDelta * lngScale;
+  const segmentLength =
+    scaledLatDelta * scaledLatDelta + scaledLngDelta * scaledLngDelta;
+  const pointLatDelta = (pointLat - startLat) * latScale;
+  const pointLngDelta = (pointLng - startLng) * lngScale;
+  const segmentProgress =
+    segmentLength === 0
+      ? 0
+      : clamp(
+          (pointLatDelta * scaledLatDelta + pointLngDelta * scaledLngDelta) /
+            segmentLength,
+          0,
+          1,
+        );
+
+  return {
+    lat: startLat + latDelta * segmentProgress,
+    lng: startLng + lngDelta * segmentProgress,
+    distance:
+      ((pointLat - (startLat + latDelta * segmentProgress)) * latScale) ** 2 +
+      ((pointLng - (startLng + lngDelta * segmentProgress)) * lngScale) ** 2,
+  };
 }
 
-function completedRouteFor(data, progress) {
-  if (Array.isArray(data.actualPath) && data.actualPath.length > 0) {
-    return data.actualPath.map(toLatLng);
+function completedRouteFor(data) {
+  const route = Array.isArray(data.route) ? data.route : [];
+
+  if (route.length <= 1) {
+    return route.map(toLatLng);
   }
 
-  const completedRoute = splitRouteByProgress(data.route.map(toLatLng), progress);
-  const currentPoint = toLatLng(data.current);
-  const lastPoint = completedRoute[completedRoute.length - 1];
+  let bestMatch = null;
 
-  if (!lastPoint || lastPoint[0] !== currentPoint[0] || lastPoint[1] !== currentPoint[1]) {
-    completedRoute.push(currentPoint);
+  for (let index = 0; index < route.length - 1; index += 1) {
+    const projected = projectPointOnSegment(data.current, route[index], route[index + 1]);
+
+    if (!bestMatch || projected.distance < bestMatch.distance) {
+      bestMatch = { ...projected, segmentIndex: index };
+    }
   }
+
+  const completedRoute = route.slice(0, bestMatch.segmentIndex + 1).map(toLatLng);
+  completedRoute.push([bestMatch.lat, bestMatch.lng]);
 
   return completedRoute;
 }
