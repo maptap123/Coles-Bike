@@ -1,0 +1,13 @@
+node_modules/
+.npm-cache/
+.vercel/
+.vercel-cli-appdata/
+.vercel-cli-localappdata/
+.vercel-cli-config/
+.vercel-cli-cache/
+.env
+.env.local
+scraper/.env
+scraper/browser-profile/
+scraper/logs/
+screenshots/
