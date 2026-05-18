@@ -305,6 +305,37 @@ h2 {
   line-height: 1.3;
 }
 
+.main-goals-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-goals-list li {
+  position: relative;
+  min-height: 28px;
+  padding-left: 22px;
+  font-size: 0.94rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.main-goals-list li::before {
+  position: absolute;
+  top: 0.46em;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow:
+    7px 0 0 #fffaf1,
+    14px 0 0 var(--blue);
+  content: "";
+}
+
 .social-button-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
