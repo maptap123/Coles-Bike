@@ -1,0 +1,108 @@
+{
+  "title": "Bike Across America",
+  "subtitle": "A coast-to-coast ride, one town and one long road at a time.",
+  "status": "On the road",
+  "startedAt": "2026-04-01T08:00:00-04:00",
+  "totalMiles": 3420,
+  "current": {
+    "place": "Kansas City, Missouri",
+    "lat": 39.0997,
+    "lng": -94.5786,
+    "miles": 1840,
+    "updatedAt": "May 16, 2026 at 8:30 AM"
+  },
+  "route": [
+    { "place": "San Francisco, CA", "lat": 37.7749, "lng": -122.4194 },
+    { "place": "Sacramento, CA", "lat": 38.5816, "lng": -121.4944 },
+    { "place": "Reno, NV", "lat": 39.5296, "lng": -119.8138 },
+    { "place": "Salt Lake City, UT", "lat": 40.7608, "lng": -111.891 },
+    { "place": "Denver, CO", "lat": 39.7392, "lng": -104.9903 },
+    { "place": "Kansas City, MO", "lat": 39.0997, "lng": -94.5786 },
+    { "place": "St. Louis, MO", "lat": 38.627, "lng": -90.1994 },
+    { "place": "Indianapolis, IN", "lat": 39.7684, "lng": -86.1581 },
+    { "place": "Columbus, OH", "lat": 39.9612, "lng": -82.9988 },
+    { "place": "Pittsburgh, PA", "lat": 40.4406, "lng": -79.9959 },
+    { "place": "Philadelphia, PA", "lat": 39.9526, "lng": -75.1652 },
+    { "place": "Atlantic City, NJ", "lat": 39.3643, "lng": -74.4229 }
+  ],
+  "actualPath": [
+    {
+      "place": "San Francisco, California",
+      "lat": 37.7749,
+      "lng": -122.4194,
+      "miles": 0,
+      "updatedAt": "Trip start"
+    },
+    {
+      "place": "Kansas City, Missouri",
+      "lat": 39.0997,
+      "lng": -94.5786,
+      "miles": 1840,
+      "updatedAt": "May 16, 2026 at 8:30 AM"
+    }
+  ],
+  "checkins": [
+    {
+      "date": "May 16, 2026",
+      "place": "Kansas City, Missouri",
+      "note": "Rolling east after breakfast and a quick bag check."
+    },
+    {
+      "date": "May 13, 2026",
+      "place": "Topeka, Kansas",
+      "note": "Crosswinds all afternoon, legs still good."
+    },
+    {
+      "date": "May 10, 2026",
+      "place": "Hays, Kansas",
+      "note": "Long prairie stretch, huge sky."
+    }
+  ],
+  "goals": [
+    {
+      "label": "Dip the back wheel in the Pacific",
+      "detail": "San Francisco, California",
+      "done": true
+    },
+    {
+      "label": "Cross the Rockies",
+      "detail": "Climb, descend, repeat",
+      "done": true
+    },
+    {
+      "label": "Ride through the Great Plains",
+      "detail": "Long miles and open sky",
+      "done": false
+    },
+    {
+      "label": "Reach the Atlantic",
+      "detail": "Atlantic City, New Jersey",
+      "done": false
+    }
+  ],
+  "instagram": {
+    "url": "https://www.instagram.com/",
+    "posts": [
+      {
+        "title": "Road update",
+        "caption": "Latest photos from the ride",
+        "url": "https://www.instagram.com/"
+      },
+      {
+        "title": "Camp note",
+        "caption": "Nights, repairs, and small wins",
+        "url": "https://www.instagram.com/"
+      },
+      {
+        "title": "Mileage day",
+        "caption": "Big miles across the middle",
+        "url": "https://www.instagram.com/"
+      },
+      {
+        "title": "Food stop",
+        "caption": "Best roadside fuel so far",
+        "url": "https://www.instagram.com/"
+      }
+    ]
+  }
+}
