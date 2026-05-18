@@ -4,9 +4,9 @@ A Vercel-ready tracker site for sharing bike trip progress with friends and fami
 
 ## How Updates Work
 
-The website checks for new progress every 10 minutes. On Vercel, it reads the latest saved progress from Vercel Blob storage. If Blob is not configured yet, it falls back to `data/progress.json`.
+The website checks for new saved progress every 10 minutes. On Vercel, it reads the latest saved progress from Vercel Blob storage. If Blob is not configured yet, it falls back to `data/progress.json`.
 
-Samsung SmartTags are useful for private bag tracking, but they do not expose a simple public website feed. The reliable setup is to send location from your phone with Android automation, a GPS tracker, or another location feed.
+Location updates now come from the phone's GPS. Set up the phone to send one protected POST request to `/api/location` once an hour. The site snaps that point to the planned Ride with GPS route, moves the current marker along the route line, and keeps the raw phone coordinates as `sourceLat` and `sourceLng`.
 
 ## Vercel Setup
 
@@ -14,62 +14,27 @@ Create a Vercel Blob store for the project, then add these environment variables
 
 - `BLOB_READ_WRITE_TOKEN`: created by Vercel Blob
 - `TRACKER_UPDATE_SECRET`: a long random password for location updates
-- `CRON_SECRET`: a long random password for the scheduled refresh endpoint
-- `LOCATION_SOURCE`: set to `smartthings` to pull from SmartThings every 10 minutes
-- `SMARTTHINGS_TOKEN`: your SmartThings API token
-- `SMARTTHINGS_DEVICE_ID`: the SmartTag or device ID to read
-- `SMARTTHINGS_PLACE_LABEL`: optional public label, such as `Latest bag location`
-- `LOCATION_FEED_URL`: optional JSON feed for the 10-minute cron job
+- `CRON_SECRET`: optional long random password for the scheduled refresh endpoint
+- `LOCATION_FEED_URL`: optional JSON feed for the hourly cron job
 - `LOCATION_FEED_SECRET`: optional bearer token for that feed
 
-The included `vercel.json` runs `/api/refresh-location` every 10 minutes.
+The included `vercel.json` runs `/api/refresh-location` once an hour. You only need that if you use `LOCATION_FEED_URL`. If the phone posts directly to `/api/location`, the hourly phone automation is enough.
 
-## SmartThings Setup
+## Phone GPS Updates
 
-Samsung SmartThings Find is the public-facing website for SmartTags, but this project uses the official SmartThings API instead of trying to scrape the website login. Scraping the website is fragile and can break on login, CAPTCHA, two-factor checks, or Samsung page changes.
+The easiest phone setup is a GET request with everything in the URL:
 
-To test whether your SmartTag exposes location through the API:
+```text
+https://your-site.vercel.app/api/location?secret=YOUR_TRACKER_UPDATE_SECRET&place=Latest%20phone%20GPS&lat=39.0997&lng=-94.5786
+```
 
-1. Go to `https://account.smartthings.com/tokens`.
-2. Generate a token with device read scopes.
-3. Add it to Vercel as `SMARTTHINGS_TOKEN`.
-4. Add `TRACKER_UPDATE_SECRET`.
-5. Call this protected endpoint:
+In Tasker, use `Get Location v2`, then add an `HTTP Request` action with method `GET` and a URL like:
 
-`https://your-site.vercel.app/api/smartthings-devices`
+```text
+https://your-site.vercel.app/api/location?secret=YOUR_TRACKER_UPDATE_SECRET&place=Latest%20phone%20GPS&lat=%gl_latitude&lng=%gl_longitude
+```
 
-Use this header:
-
-`Authorization: Bearer YOUR_TRACKER_UPDATE_SECRET`
-
-Find your tag/device in the response and copy its `deviceId` into `SMARTTHINGS_DEVICE_ID`. Then set `LOCATION_SOURCE=smartthings`.
-
-If `/api/refresh-location` says SmartThings did not expose latitude/longitude, the tag is visible in SmartThings Find but hidden from the public API. In that case, use the phone automation endpoint below instead.
-
-## Local SmartThings Find Scraper
-
-If you want to try scraping the SmartThings Find website from this PC, use the local scraper. This should run on your own computer, not on Vercel.
-
-The scraper keeps a browser profile in `scraper/browser-profile`, so you can log into Samsung once and reuse that session. It does not push to Git or redeploy Vercel. It sends location updates directly to `/api/location`, which is the safer path.
-
-Setup:
-
-1. Copy `scraper/.env.example` to `scraper/.env`.
-2. Set `TRACKER_SITE_URL` and `TRACKER_UPDATE_SECRET`.
-3. Run `npm run scraper:login`.
-4. Log into Samsung in the browser window, then press Enter in the terminal.
-5. Run `npm run scraper`.
-
-The hard part is whether SmartThings Find exposes raw latitude/longitude in page text. If it does, the scraper may find it automatically. If not, inspect the page and set:
-
-- `SMARTTHINGS_LOCATION_SELECTOR`, or
-- `SMARTTHINGS_LAT_SELECTOR` and `SMARTTHINGS_LNG_SELECTOR`
-
-If scraping fails, screenshots and errors are saved in `scraper/logs`.
-
-## Push a Location Update
-
-Send a POST request to:
+You can also send a POST request to:
 
 `https://your-site.vercel.app/api/location`
 
@@ -84,13 +49,18 @@ Send JSON like:
   "place": "Kansas City, Missouri",
   "lat": 39.0997,
   "lng": -94.5786,
-  "miles": 1840,
   "updatedAt": "May 16, 2026 at 8:30 AM",
   "note": "Rolling east after breakfast."
 }
 ```
 
+`miles` is optional. If it is not sent, the tracker estimates mileage from the phone's GPS point along the planned route.
+
 Every successful update moves the current marker and appends a point to `actualPath`. The public progress file is visible to site visitors, but writes are protected by `TRACKER_UPDATE_SECRET`.
+
+For an hourly phone setup, use an automation app such as Shortcuts on iPhone or MacroDroid/Tasker on Android. Configure it to collect the current GPS coordinates and send the JSON body above once an hour.
+
+The completed line on the map follows the planned route instead of drawing straight lines between hourly phone updates. The starter route in `data/progress.json` points at `https://ridewithgps.com/routes/54272880`; the API fetches and simplifies that route before serving progress.
 
 ## Edit the Starter Route
 
@@ -98,7 +68,7 @@ Edit `data/progress.json`:
 
 - `current`: the public location shown now
 - `totalMiles`: expected full trip distance
-- `route`: the planned cross-country route
+- `routeSource`: the planned Ride with GPS route URL
 - `actualPath`: the real path published so far
 - `checkins`: recent public notes
 
