@@ -3,6 +3,11 @@
   "subtitle": "Following the planned Ride with GPS route from 48.121, -123.432 to 39.51, -74.32.",
   "status": "On the road",
   "startedAt": "2026-04-01T08:00:00-04:00",
+  "routeStart": {
+    "place": "Shoreline, WA",
+    "lat": 47.76433,
+    "lng": -122.387336
+  },
   "totalMiles": 3820.5,
   "current": {
     "place": "Route start",
