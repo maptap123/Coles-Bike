@@ -1,19 +1,17 @@
-const TRAIL_SEGMENT_SIZE = 3;
-
-function lerpChannel(a, b, t) {
-  return Math.round(a + (b - a) * t);
-}
-
-function trailColorAt(t) {
-  // Vibrant flag gradient: patriot red → white → deep navy
-  const red = [204, 0, 41];
-  const white = [255, 255, 255];
-  const navy = [0, 40, 104];
-  const [r1, g1, b1] = t < 0.5 ? red : white;
-  const [r2, g2, b2] = t < 0.5 ? white : navy;
-  const u = t < 0.5 ? t * 2 : (t - 0.5) * 2;
-  return `rgb(${lerpChannel(r1, r2, u)},${lerpChannel(g1, g2, u)},${lerpChannel(b1, b2, u)})`;
-}
+const TRAIL_CASING_STYLE = {
+  color: "#001540",
+  weight: 9,
+  opacity: 0.85,
+  lineCap: "round",
+  lineJoin: "round",
+};
+const TRAIL_FILL_STYLE = {
+  color: "#CC0029",
+  weight: 5,
+  opacity: 1,
+  lineCap: "round",
+  lineJoin: "round",
+};
 
 const REFRESH_INTERVAL_MS = 60 * 1000;
 
@@ -174,59 +172,15 @@ function completedRouteFor(data) {
   return completedRoute;
 }
 
-function routeColorSegments(route) {
-  if (!Array.isArray(route) || route.length <= 1) {
-    return [];
-  }
-
-  const segments = [];
-  let startIndex = 0;
-  const last = route.length - 1;
-
-  while (startIndex < last) {
-    const endIndex = Math.min(startIndex + TRAIL_SEGMENT_SIZE, last);
-    const t = last === 0 ? 0 : (startIndex + endIndex) / 2 / last;
-
-    segments.push({
-      color: trailColorAt(t),
-      points: route.slice(startIndex, endIndex + 1),
-    });
-
-    startIndex = endIndex;
-  }
-
-  return segments;
-}
-
 function drawCompletedTrail(map, route) {
   if (!Array.isArray(route) || route.length <= 1) {
     return;
   }
 
-  routeColorSegments(route).forEach((segment) => {
-    const c = segment.color;
-    // Outer halo — wide soft glow
-    mapState.layers.push(
-      L.polyline(segment.points, {
-        color: c, weight: 18, opacity: 0.12,
-        lineCap: "round", lineJoin: "round",
-      }).addTo(map),
-    );
-    // Mid glow
-    mapState.layers.push(
-      L.polyline(segment.points, {
-        color: c, weight: 10, opacity: 0.35,
-        lineCap: "round", lineJoin: "round",
-      }).addTo(map),
-    );
-    // Bright core
-    mapState.layers.push(
-      L.polyline(segment.points, {
-        color: c, weight: 5, opacity: 0.95,
-        lineCap: "round", lineJoin: "round",
-      }).addTo(map),
-    );
-  });
+  // Navy casing underneath for contrast against any map background
+  mapState.layers.push(L.polyline(route, TRAIL_CASING_STYLE).addTo(map));
+  // Patriot red fill on top
+  mapState.layers.push(L.polyline(route, TRAIL_FILL_STYLE).addTo(map));
 }
 
 function formatDuration(startDate) {
