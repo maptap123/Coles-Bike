@@ -15,10 +15,10 @@ Create a Vercel Blob store for the project, then add these environment variables
 - `BLOB_READ_WRITE_TOKEN`: created by Vercel Blob
 - `TRACKER_UPDATE_SECRET`: a long random password for location updates
 - `CRON_SECRET`: optional long random password for the scheduled refresh endpoint
-- `LOCATION_FEED_URL`: optional JSON feed for the hourly cron job
+- `LOCATION_FEED_URL`: optional JSON feed for a scheduled refresh endpoint
 - `LOCATION_FEED_SECRET`: optional bearer token for that feed
 
-The included `vercel.json` runs `/api/refresh-location` once an hour. You only need that if you use `LOCATION_FEED_URL`. If the phone posts directly to `/api/location`, the hourly phone automation is enough.
+The default `vercel.json` does not schedule a cron job so it can deploy cleanly on Hobby/free Vercel projects. If the phone posts directly to `/api/location`, the hourly phone automation is enough.
 
 ## Phone GPS Updates
 
