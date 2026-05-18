@@ -635,6 +635,10 @@ h2 {
     width: min(390px, calc(100% - 32px));
   }
 
+  .leaflet-control-zoom {
+    display: none;
+  }
+
   .map-badges {
     justify-items: start;
   }
@@ -649,6 +653,11 @@ h2 {
 }
 
 @media (max-width: 520px) {
+  .map-panel {
+    height: auto;
+    overflow: visible;
+  }
+
   .map-overlay {
     align-items: stretch;
     flex-direction: column;
