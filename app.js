@@ -340,10 +340,7 @@ function renderMap(data, progress) {
 
   clearRideLayers();
 
-  const actualPath = Array.isArray(data.actualPath) && data.actualPath.length > 1
-    ? data.actualPath.map(toLatLng)
-    : null;
-  const completedRoute = actualPath ?? completedRouteFor(data, progress);
+  const completedRoute = completedRouteFor(data, progress);
   const routePoint = routePointForMiles(data);
   const destination = lastRoutePoint(data.route);
 
