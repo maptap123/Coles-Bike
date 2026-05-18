@@ -14,8 +14,6 @@ Create a Vercel Blob store for the project, then add these environment variables
 
 - `BLOB_READ_WRITE_TOKEN`: created by Vercel Blob
 - `TRACKER_UPDATE_SECRET`: a long random password for location updates
-- `INSTAGRAM_ACCESS_TOKEN`: Instagram Graph API token used to load the latest four posts
-- `INSTAGRAM_USER_ID`: optional Instagram user ID; defaults to `me`
 - `CRON_SECRET`: optional long random password for the scheduled refresh endpoint
 - `LOCATION_FEED_URL`: optional JSON feed for a scheduled refresh endpoint
 - `LOCATION_FEED_SECRET`: optional bearer token for that feed
@@ -71,8 +69,8 @@ Edit `data/progress.json`:
 - `totalMiles`: expected full trip distance
 - `routeSource`: the planned Ride with GPS route URL
 - `actualPath`: the real path published so far
-- `facebookLocation`: optional override for the Facebook profile or place link
-- `instagram`: Instagram profile link and optional fallback post links
+- `facebookLocation`: optional override for the Facebook profile link
+- `instagram`: Instagram profile link
 
 ## Local Preview
 
