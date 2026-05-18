@@ -1,14 +1,20 @@
-const routeStyle = {
-  color: "#1f7a5b",
-  weight: 5,
-  opacity: 0.9,
-};
-
-const completedStyle = {
-  color: "#cb4b35",
-  weight: 6,
-  opacity: 0.95,
-};
+const completedStripeStyles = [
+  {
+    color: "#1d4f8f",
+    weight: 14,
+    opacity: 0.92,
+  },
+  {
+    color: "#fffaf1",
+    weight: 9,
+    opacity: 0.96,
+  },
+  {
+    color: "#c92932",
+    weight: 4,
+    opacity: 0.98,
+  },
+];
 
 const REFRESH_INTERVAL_MS = 60 * 1000;
 
@@ -51,6 +57,10 @@ function hasSourceLocation(point) {
 
 function sourceLatLng(point) {
   return [Number(point.sourceLat), Number(point.sourceLng)];
+}
+
+function lastRoutePoint(route) {
+  return Array.isArray(route) && route.length > 0 ? route[route.length - 1] : null;
 }
 
 function formatCoordinate(value) {
@@ -290,12 +300,13 @@ function renderMap(data, progress) {
 
   clearRideLayers();
 
-  const route = data.route.map(toLatLng);
   const completedRoute = completedRouteFor(data, progress);
   const routePoint = closestPointOnRoute(data.current, data.route);
+  const destination = lastRoutePoint(data.route);
 
-  mapState.layers.push(L.polyline(route, routeStyle).addTo(mapState.map));
-  mapState.layers.push(L.polyline(completedRoute, completedStyle).addTo(mapState.map));
+  completedStripeStyles.forEach((style) => {
+    mapState.layers.push(L.polyline(completedRoute, style).addTo(mapState.map));
+  });
 
   const markerIcon = L.divIcon({
     className: "ride-marker",
@@ -310,7 +321,22 @@ function renderMap(data, progress) {
   );
   mapState.layers.push(marker);
 
-  const boundsPoints = [...route, ...completedRoute];
+  if (destination) {
+    const destinationIcon = L.divIcon({
+      className: "destination-marker",
+      iconSize: [30, 42],
+      iconAnchor: [15, 40],
+    });
+    const destinationMarker = L.marker(toLatLng(destination), {
+      icon: destinationIcon,
+    }).addTo(mapState.map);
+    destinationMarker.bindPopup("<strong>Atlantic finish</strong>");
+    mapState.layers.push(destinationMarker);
+  }
+
+  const boundsPoints = destination
+    ? [...completedRoute, toLatLng(routePoint), toLatLng(destination)]
+    : [...completedRoute, toLatLng(routePoint)];
 
   if (hasSourceLocation(data.current)) {
     const phoneIcon = L.divIcon({
