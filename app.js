@@ -63,6 +63,24 @@ function projectPointOnSegment(point, segmentStart, segmentEnd) {
   };
 }
 
+function closestPointOnRoute(point, route) {
+  if (!Array.isArray(route) || route.length <= 1) {
+    return point;
+  }
+
+  let bestMatch = null;
+
+  for (let index = 0; index < route.length - 1; index += 1) {
+    const projected = projectPointOnSegment(point, route[index], route[index + 1]);
+
+    if (!bestMatch || projected.distance < bestMatch.distance) {
+      bestMatch = { ...projected, segmentIndex: index };
+    }
+  }
+
+  return bestMatch || point;
+}
+
 function completedRouteFor(data) {
   const route = Array.isArray(data.route) ? data.route : [];
 
@@ -70,37 +88,12 @@ function completedRouteFor(data) {
     return route.map(toLatLng);
   }
 
-  let bestMatch = null;
-
-  for (let index = 0; index < route.length - 1; index += 1) {
-    const projected = projectPointOnSegment(data.current, route[index], route[index + 1]);
-
-    if (!bestMatch || projected.distance < bestMatch.distance) {
-      bestMatch = { ...projected, segmentIndex: index };
-    }
-  }
+  const bestMatch = closestPointOnRoute(data.current, route);
 
   const completedRoute = route.slice(0, bestMatch.segmentIndex + 1).map(toLatLng);
   completedRoute.push([bestMatch.lat, bestMatch.lng]);
 
   return completedRoute;
-}
-
-function renderCheckins(checkins) {
-  const list = document.querySelector("#journal-list");
-  list.innerHTML = "";
-
-  checkins.slice(0, 5).forEach((checkin) => {
-    const item = document.createElement("li");
-    const title = document.createElement("strong");
-    const detail = document.createElement("span");
-
-    title.textContent = checkin.place;
-    detail.textContent = `${checkin.date} - ${checkin.note}`;
-
-    item.append(title, detail);
-    list.append(item);
-  });
 }
 
 function formatDuration(startDate) {
@@ -150,6 +143,25 @@ function renderGoals(goals = []) {
     item.append(box, text);
     list.append(item);
   });
+}
+
+function facebookLocationUrl(place) {
+  const query = encodeURIComponent(place || "Latest ride location");
+  return `https://www.facebook.com/search/places/?q=${query}`;
+}
+
+function renderFacebookLocation(data) {
+  const place = data.facebookLocation?.place || data.current.place;
+  const url = data.facebookLocation?.url || facebookLocationUrl(place);
+  const link = document.querySelector("#facebook-location-link");
+  const label = document.querySelector("#facebook-location-place");
+
+  label.textContent = place;
+  link.href = url;
+  link.onclick = (event) => {
+    event.preventDefault();
+    window.location.assign(url);
+  };
 }
 
 function renderInstagram(instagram = {}) {
@@ -271,6 +283,7 @@ function renderMap(data, progress) {
 
   const route = data.route.map(toLatLng);
   const completedRoute = completedRouteFor(data, progress);
+  const routePoint = closestPointOnRoute(data.current, data.route);
 
   mapState.layers.push(L.polyline(route, routeStyle).addTo(mapState.map));
   mapState.layers.push(L.polyline(completedRoute, completedStyle).addTo(mapState.map));
@@ -280,7 +293,7 @@ function renderMap(data, progress) {
     iconSize: [34, 34],
     iconAnchor: [17, 17],
   });
-  const marker = L.marker(toLatLng(data.current), { icon: markerIcon }).addTo(
+  const marker = L.marker(toLatLng(routePoint), { icon: markerIcon }).addTo(
     mapState.map,
   );
   marker.bindPopup(`<strong>${data.current.place}</strong><br>${data.current.updatedAt}`);
@@ -293,7 +306,7 @@ function renderMap(data, progress) {
 async function refreshProgress() {
   const data = await loadProgress();
   const progress = renderStats(data);
-  renderCheckins(data.checkins || []);
+  renderFacebookLocation(data);
   renderGoals(data.goals || []);
   renderInstagram(data.instagram || {});
   renderMap(data, progress);
