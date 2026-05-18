@@ -294,7 +294,7 @@ h2 {
 
 .social-button-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -316,6 +316,16 @@ h2 {
 .social-button:hover {
   background: var(--blue);
   color: #fffaf1;
+}
+
+.donation-button {
+  background: var(--green);
+  color: #fffaf1;
+}
+
+.donation-button:focus,
+.donation-button:hover {
+  background: #155b44;
 }
 
 .leaflet-control-attribution {
