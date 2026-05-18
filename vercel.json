@@ -4,11 +4,5 @@
     "api/*.js": {
       "maxDuration": 15
     }
-  },
-  "crons": [
-    {
-      "path": "/api/refresh-location",
-      "schedule": "0 * * * *"
-    }
-  ]
+  }
 }
