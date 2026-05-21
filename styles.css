@@ -554,22 +554,13 @@ h2 {
 }
 
 .ride-marker {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
+  width: 44px;
+  height: 44px;
   border: 3px solid var(--cream);
   border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 8px 22px rgba(0, 20, 64, 0.5);
-}
-
-.ride-marker::after {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
   background: var(--cream);
-  content: "";
+  box-shadow: 0 8px 22px rgba(0, 20, 64, 0.5);
+  overflow: hidden;
 }
 
 .destination-marker {

@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "devCommand": "echo 'dev server ready'",
   "functions": {
     "api/*.js": {
       "maxDuration": 15

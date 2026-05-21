@@ -13,7 +13,7 @@ const TRAIL_FILL_STYLE = {
   lineJoin: "round",
 };
 
-const REFRESH_INTERVAL_MS = 60 * 1000;
+const REFRESH_INTERVAL_MS = 10 * 60 * 1000;
 
 const mapState = {
   map: null,
@@ -348,8 +348,9 @@ function renderMap(data, progress) {
 
   const markerIcon = L.divIcon({
     className: "ride-marker",
-    iconSize: [34, 34],
-    iconAnchor: [17, 17],
+    html: '<img src="/cole-marker.png" style="width:100%;height:100%;object-fit:cover;">',
+    iconSize: [44, 44],
+    iconAnchor: [22, 22],
   });
   const marker = L.marker(toLatLng(routePoint), { icon: markerIcon }).addTo(
     mapState.map,
