@@ -60,7 +60,8 @@
     },
     {
       "label": "Find a riding partner for at least a mile",
-      "done": false
+      "done": true,
+      "detail": "completed May 23rd"
     },
     {
       "label": "Watch a baseball game",
