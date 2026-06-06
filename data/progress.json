@@ -48,7 +48,8 @@
     },
     {
       "label": "Find Winnie the Pooh",
-      "done": false
+      "done": true,
+      "detail": "completed 6/1"
     },
     {
       "label": "Find people from 13 different countries",
