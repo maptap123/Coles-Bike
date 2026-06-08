@@ -86,7 +86,8 @@
     },
     {
       "label": "Sleep under a bridge",
-      "done": false
+      "done": true,
+      "detail": "Completed on 6/7"
     },
     {
       "label": "Find a wife",
