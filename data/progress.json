@@ -57,7 +57,8 @@
     },
     {
       "label": "Go swimming",
-      "done": false
+      "done": true,
+      "detail": "completed June 12th"
     },
     {
       "label": "Find a riding partner for at least a mile",
