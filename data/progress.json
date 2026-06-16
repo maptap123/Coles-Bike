@@ -67,7 +67,8 @@
     },
     {
       "label": "Watch a baseball game",
-      "done": false
+      "done": true,
+      "detail": "completed June 15th"
     },
     {
       "label": "Play a board game",
