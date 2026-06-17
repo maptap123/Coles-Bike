@@ -32,7 +32,8 @@
   "goals": [
     {
       "label": "Evolve Pokemon",
-      "done": false
+      "done": true,
+      "detail": "completed June 17"
     },
     {
       "label": "Finish Pokedex",
