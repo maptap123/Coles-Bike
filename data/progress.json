@@ -73,11 +73,13 @@
     },
     {
       "label": "Play a board game",
-      "done": false
+      "done": true,
+      "detail": "completed June 21st"
     },
     {
       "label": "Play a card game",
-      "done": false
+      "done": true,
+      "detail": "completed June 21st"
     },
     {
       "label": "See a shooting star",
