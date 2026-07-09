@@ -104,7 +104,8 @@
     },
     {
       "label": "Join a bonfire",
-      "done": false
+      "done": true,
+      "detail": "completed July 9th"
     },
     {
       "label": "Read a book to someone",
