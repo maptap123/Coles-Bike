@@ -100,7 +100,8 @@
     },
     {
       "label": "Go to a fair",
-      "done": false
+      "done": true,
+      "detail": "completed July 16th"
     },
     {
       "label": "Join a bonfire",
@@ -109,7 +110,8 @@
     },
     {
       "label": "Read a book to someone",
-      "done": false
+      "done": true,
+      "detail": "completed July 16th"
     }
   ],
   "instagram": {
